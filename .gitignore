@@ -1,0 +1,249 @@
+# Environment variables and sensitive configuration
+.env
+.env.local
+.env.production
+.env.staging
+.env.*
+*.env
+
+# Jira credentials and tokens
+jira_credentials.json
+jira_token.txt
+api_keys.txt
+secrets.json
+credentials.json
+*.key
+*.pem
+*.p12
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+.venv
+venv.bak/
+env.bak/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+logs/
+*.log
+temp/
+tmp/
+.tmp/
+*.tmp
+
+# Generated reports and data - COMPREHENSIVE COVERAGE
+results/
+output/
+data/
+reports/
+*.json
+*.csv
+*.xlsx
+*.xls
+*.html
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+
+# Generated text and markdown files (but allow essential files)
+*.txt
+*.md
+!README.md
+!env_example.txt
+!requirements.txt
+
+# Project-specific generated files
+soc_metrics_*.txt
+soc_metrics_*.xlsx
+soc_metrics_*.html
+soc_metrics_*.png
+*_soc_metrics_*.txt
+*_soc_metrics_*.xlsx
+*_soc_metrics_*.html
+*_soc_metrics_*.png
+weekly_*.txt
+weekly_*.xlsx
+weekly_*.html
+weekly_*.png
+monthly_*.txt
+monthly_*.xlsx
+monthly_*.html
+monthly_*.png
+quarterly_*.txt
+quarterly_*.xlsx
+quarterly_*.html
+quarterly_*.png
+yearly_*.txt
+yearly_*.xlsx
+yearly_*.html
+yearly_*.png
+all_time_*.txt
+all_time_*.xlsx
+all_time_*.html
+all_time_*.png
+last_week_*.txt
+last_week_*.xlsx
+last_week_*.html
+last_week_*.png
+last_month_*.txt
+last_month_*.xlsx
+last_month_*.html
+last_month_*.png
+last_quarter_*.txt
+last_quarter_*.xlsx
+last_quarter_*.html
+last_quarter_*.png
+last_year_*.txt
+last_year_*.xlsx
+last_year_*.html
+last_year_*.png
+
+# Cron and automation files
+soc_metrics_cron.txt
+*.cron
+*.lock
+soc_metrics.lock
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Documentation build
+docs/_build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Configuration files that might contain secrets
+config.ini
+settings.json
+credentials.json
+secrets.json
+*.ini
+*.cfg
+*.conf
+
+# Personal and company information patterns
+*personal*
+*company*
+*internal*
+*private*
+*secret*
+*password*
+*token*
+*key*
+*credential*
+*login*
+*user*
+*admin*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Archive files
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Temporary and cache files
+*.tmp
+*.temp
+*.cache
+.cache/ 

@@ -1,0 +1,434 @@
+# SOC Metrics Analyzer - Environment Configuration Template
+# Copy this file to .env and update with your actual values
+
+# =============================================================================
+# JIRA CONNECTION CONFIGURATION
+# =============================================================================
+
+# Jira Server URL (required)
+JIRA_SERVER=https://your-domain.atlassian.net
+
+# Jira Username (required)
+JIRA_USERNAME=your-email@domain.com
+
+# Jira API Token (required)
+JIRA_API_TOKEN=your-api-token-here
+
+# Jira Project Key (required)
+PROJECT_KEY=YOUR_PROJECT_KEY
+
+# =============================================================================
+# ANALYSIS CONFIGURATION
+# =============================================================================
+
+# Analysis Type: ALL_TICKETS, EXCLUDE_TESTING_DUPLICATES, BOTH
+ANALYSIS_TYPE=ALL_TICKETS
+
+# Time Period: ALL_TIME, LAST_WEEK, LAST_MONTH, LAST_QUARTER, LAST_YEAR, CUSTOM
+TIME_PERIOD=LAST_WEEK
+
+# Maximum number of issues to retrieve (0 = no limit)
+MAX_ISSUES=10000
+
+# =============================================================================
+# SLA THRESHOLDS (in hours)
+# =============================================================================
+
+# Critical priority SLA threshold
+SLA_CRITICAL_HOURS=4
+
+# High priority SLA threshold
+SLA_HIGH_HOURS=8
+
+# Medium priority SLA threshold
+SLA_MEDIUM_HOURS=24
+
+# Low priority SLA threshold
+SLA_LOW_HOURS=72
+
+# =============================================================================
+# PERFORMANCE THRESHOLDS
+# =============================================================================
+
+# Excellent performance threshold (hours)
+PERFORMANCE_EXCELLENT_HOURS=2
+
+# Good performance threshold (hours)
+PERFORMANCE_GOOD_HOURS=4
+
+# Average performance threshold (hours)
+PERFORMANCE_AVERAGE_HOURS=8
+
+# Poor performance threshold (hours)
+PERFORMANCE_POOR_HOURS=24
+
+# =============================================================================
+# BUSINESS HOURS CONFIGURATION
+# =============================================================================
+
+# Business hours start (24-hour format)
+BUSINESS_HOURS_START=9
+
+# Business hours end (24-hour format)
+BUSINESS_HOURS_END=17
+
+# Business days (comma-separated: 0=Monday, 6=Sunday)
+BUSINESS_DAYS=0,1,2,3,4
+
+# Timezone for business hours
+TIMEZONE=UTC
+
+# =============================================================================
+# TICKET LIFECYCLE CONFIGURATION
+# =============================================================================
+
+# Status when ticket is first actioned
+FIRST_ACTION_STATUS=In Progress
+
+# Completion statuses (comma-separated)
+COMPLETION_STATUSES=expected-activity,false-positive,true-positive,duplicate,testing
+
+# Statuses to exclude from production analysis
+EXCLUDE_STATUSES=testing,duplicate
+
+# =============================================================================
+# ANALYSIS TYPES CONFIGURATION
+# =============================================================================
+
+# All tickets analysis name
+ALL_TICKETS_NAME=All Tickets Analysis
+
+# All tickets analysis description
+ALL_TICKETS_DESCRIPTION=Analysis including all ticket types
+
+# Production tickets analysis name
+PRODUCTION_TICKETS_NAME=Production Tickets Analysis
+
+# Production tickets analysis description
+PRODUCTION_TICKETS_DESCRIPTION=Analysis excluding testing and duplicate tickets
+
+# Production tickets exclude statuses
+PRODUCTION_TICKETS_EXCLUDE=testing,duplicate
+
+# =============================================================================
+# SCHEDULING CONFIGURATION
+# =============================================================================
+
+# Weekly report enabled
+WEEKLY_ENABLED=true
+
+# Weekly report days back
+WEEKLY_DAYS_BACK=7
+
+# Weekly report prefix
+WEEKLY_REPORT_PREFIX=weekly_soc_metrics
+
+# Monthly report enabled
+MONTHLY_ENABLED=true
+
+# Monthly report days back
+MONTHLY_DAYS_BACK=30
+
+# Monthly report prefix
+MONTHLY_REPORT_PREFIX=monthly_soc_metrics
+
+# Quarterly report enabled
+QUARTERLY_ENABLED=true
+
+# Quarterly report days back
+QUARTERLY_DAYS_BACK=90
+
+# Quarterly report prefix
+QUARTERLY_REPORT_PREFIX=quarterly_soc_metrics
+
+# Yearly report enabled
+YEARLY_ENABLED=true
+
+# Yearly report days back
+YEARLY_DAYS_BACK=365
+
+# Yearly report prefix
+YEARLY_REPORT_PREFIX=yearly_soc_metrics
+
+# =============================================================================
+# TIME PERIODS CONFIGURATION
+# =============================================================================
+
+# All time analysis enabled
+ALL_TIME_ENABLED=true
+
+# All time report prefix
+ALL_TIME_REPORT_PREFIX=all_time_soc_metrics
+
+# Last week analysis enabled
+LAST_WEEK_ENABLED=true
+
+# Last week days back
+LAST_WEEK_DAYS_BACK=7
+
+# Last week report prefix
+LAST_WEEK_REPORT_PREFIX=last_week_soc_metrics
+
+# Last month analysis enabled
+LAST_MONTH_ENABLED=true
+
+# Last month days back
+LAST_MONTH_DAYS_BACK=30
+
+# Last month report prefix
+LAST_MONTH_REPORT_PREFIX=last_month_soc_metrics
+
+# Last quarter analysis enabled
+LAST_QUARTER_ENABLED=true
+
+# Last quarter days back
+LAST_QUARTER_DAYS_BACK=90
+
+# Last quarter report prefix
+LAST_QUARTER_REPORT_PREFIX=last_quarter_soc_metrics
+
+# Last year analysis enabled
+LAST_YEAR_ENABLED=true
+
+# Last year days back
+LAST_YEAR_DAYS_BACK=365
+
+# Last year report prefix
+LAST_YEAR_REPORT_PREFIX=last_year_soc_metrics
+
+# Custom period analysis enabled
+CUSTOM_ENABLED=true
+
+# Custom period days back
+CUSTOM_DAYS_BACK=60
+
+# Custom period report prefix
+CUSTOM_REPORT_PREFIX=custom_soc_metrics
+
+# =============================================================================
+# ALERT CATEGORIES
+# =============================================================================
+
+# Alert categories (comma-separated)
+ALERT_CATEGORIES=malware,phishing,data-exfiltration,unauthorized-access,ddos,insider-threat,other
+
+# =============================================================================
+# PRIORITY SEVERITY MAPPING
+# =============================================================================
+
+# Critical priority severity
+PRIORITY_CRITICAL_SEVERITY=Critical
+
+# High priority severity
+PRIORITY_HIGH_SEVERITY=High
+
+# Medium priority severity
+PRIORITY_MEDIUM_SEVERITY=Medium
+
+# Low priority severity
+PRIORITY_LOW_SEVERITY=Low
+
+# =============================================================================
+# REPORT OUTPUT CONFIGURATION
+# =============================================================================
+
+# Report output directory
+REPORT_OUTPUT_DIR=results/reports
+
+# Excel report filename prefix
+EXCEL_REPORT_PREFIX=soc_metrics_report
+
+# HTML report filename prefix
+HTML_REPORT_PREFIX=soc_metrics_report
+
+# Text report filename prefix
+TEXT_REPORT_PREFIX=soc_metrics_report
+
+# =============================================================================
+# EXCEL CONFIGURATION
+# =============================================================================
+
+# Excel summary sheet name
+EXCEL_SUMMARY_SHEET=Executive Summary
+
+# Excel metrics sheet name
+EXCEL_METRICS_SHEET=Detailed Metrics
+
+# Excel trends sheet name
+EXCEL_TRENDS_SHEET=Trends Analysis
+
+# Excel breakdown sheet name
+EXCEL_BREAKDOWN_SHEET=Resolution Breakdown
+
+# Excel performance sheet name
+EXCEL_PERFORMANCE_SHEET=Performance Analysis
+
+# Excel SLA sheet name
+EXCEL_SLA_SHEET=SLA Compliance
+
+# Excel raw data sheet name
+EXCEL_RAW_DATA_SHEET=Raw Data
+
+# =============================================================================
+# ANALYSIS SETTINGS
+# =============================================================================
+
+# Enable outlier detection
+ENABLE_OUTLIER_DETECTION=true
+
+# Enable percentile analysis
+ENABLE_PERCENTILE_ANALYSIS=true
+
+# Enable trend analysis
+ENABLE_TREND_ANALYSIS=true
+
+# Enable SLA compliance checking
+ENABLE_SLA_COMPLIANCE=true
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+
+# Log level: DEBUG, INFO, WARNING, ERROR
+LOG_LEVEL=INFO
+
+# Log file path
+LOG_FILE=results/logs/soc_metrics.log
+
+# Enable console logging
+CONSOLE_LOGGING=true
+
+# Enable file logging
+FILE_LOGGING=true
+
+# =============================================================================
+# API CONFIGURATION
+# =============================================================================
+
+# Request timeout (seconds)
+REQUEST_TIMEOUT=30
+
+# Maximum retries
+MAX_RETRIES=3
+
+# Rate limit delay (seconds)
+RATE_LIMIT_DELAY=1
+
+# Enable API caching
+ENABLE_API_CACHING=true
+
+# Cache TTL (seconds)
+CACHE_TTL=300
+
+# =============================================================================
+# VISUALIZATION CONFIGURATION
+# =============================================================================
+
+# Chart DPI
+CHART_DPI=300
+
+# Chart format
+CHART_FORMAT=png
+
+# Enable chart generation
+ENABLE_CHARTS=true
+
+# Chart size (width x height)
+CHART_SIZE=12,8
+
+# =============================================================================
+# NOTIFICATION SETTINGS (OPTIONAL)
+# =============================================================================
+
+# Enable email notifications (set to true only if you want notifications)
+ENABLE_EMAIL_NOTIFICATIONS=false
+
+# SMTP server (only needed if ENABLE_EMAIL_NOTIFICATIONS=true)
+SMTP_SERVER=smtp.gmail.com
+
+# SMTP port (only needed if ENABLE_EMAIL_NOTIFICATIONS=true)
+SMTP_PORT=587
+
+# Email username (only needed if ENABLE_EMAIL_NOTIFICATIONS=true)
+EMAIL_USERNAME=your-email@domain.com
+
+# Email password (only needed if ENABLE_EMAIL_NOTIFICATIONS=true)
+EMAIL_PASSWORD=your-email-password
+
+# Notification recipients (comma-separated, only needed if ENABLE_EMAIL_NOTIFICATIONS=true)
+NOTIFICATION_RECIPIENTS=soc@domain.com
+
+# =============================================================================
+# DATA RETENTION
+# =============================================================================
+
+# Log retention days
+LOG_RETENTION_DAYS=30
+
+# Report retention days
+REPORT_RETENTION_DAYS=90
+
+# Data retention days
+DATA_RETENTION_DAYS=365
+
+# =============================================================================
+# ORGANIZATION INFORMATION (OPTIONAL)
+# =============================================================================
+
+# Organization name (optional - used in reports)
+ORG_NAME=Your Organization
+
+# Department (optional - used in reports)
+ORG_DEPARTMENT=Security Operations Center
+
+# Contact email (optional - used in reports)
+CONTACT_EMAIL=soc@yourorganization.com
+
+# Contact phone (optional - used in reports)
+CONTACT_PHONE=+1-555-123-4567
+
+# Website (optional - used in reports)
+ORG_WEBSITE=https://yourorganization.com
+
+# Address (optional - used in reports)
+ORG_ADDRESS=123 Security Street, City, State 12345
+
+# Timezone (optional - used in reports)
+ORG_TIMEZONE=UTC
+
+# SOC Manager (optional - used in reports)
+SOC_MANAGER=SOC Manager
+
+# SOC Manager Email (optional - used in reports)
+SOC_MANAGER_EMAIL=soc.manager@yourorganization.com
+
+# Escalation Contact (optional - used in reports)
+ESCALATION_CONTACT=Security Director
+
+# Escalation Email (optional - used in reports)
+ESCALATION_EMAIL=security.director@yourorganization.com
+
+# =============================================================================
+# REPORT CUSTOMIZATION
+# =============================================================================
+
+# Company logo path
+COMPANY_LOGO_PATH=assets/logo.png
+
+# Report footer
+REPORT_FOOTER=Generated by SOC Metrics Analyzer
+
+# Report header
+REPORT_HEADER=SOC Metrics Analysis Report
+
+# Include contact information
+INCLUDE_CONTACT_INFO=true
+
+# Include disclaimer
+INCLUDE_DISCLAIMER=true
+
+# Disclaimer text
+DISCLAIMER_TEXT=This report contains sensitive security information. Handle with appropriate care and follow your organization's data handling policies.
+
+# Report template
+REPORT_TEMPLATE=professional 
