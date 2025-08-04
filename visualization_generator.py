@@ -36,12 +36,28 @@ class VisualizationGenerator:
         generated_files.extend([f for f in files if f])
         return generated_files
     
+    def _add_explanation_text(self, fig, explanation: str, position: str = 'bottom'):
+        """Add explanation text to the figure below the charts"""
+        if position == 'bottom':
+            # Add explanation text below the charts
+            fig.text(0.02, 0.02, explanation, transform=fig.transFigure, 
+                    fontsize=9, verticalalignment='bottom', 
+                    bbox=dict(boxstyle='round,pad=0.5', facecolor='lightblue', alpha=0.8),
+                    wrap=True)
+        elif position == 'top':
+            # Add explanation text at the top (for special cases)
+            fig.text(0.02, 0.98, explanation, transform=fig.transFigure, 
+                    fontsize=9, verticalalignment='top', 
+                    bbox=dict(boxstyle='round,pad=0.5', facecolor='lightgreen', alpha=0.8),
+                    wrap=True)
+    
     def _create_mttr_mtd_comparison(self) -> str:
         """Create MTTR vs MTD comparison chart"""
         mttr_data = self.metrics_data['mttr']
         mtd_data = self.metrics_data['mtd']
         
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        # Increase figure height to accommodate explanation below
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 10))
         
         # MTTR Chart
         categories = ['Calendar Hours', 'Working Hours', 'Calendar Days', 'Working Days']
@@ -80,6 +96,14 @@ class VisualizationGenerator:
             ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
                     f'{value:.1f}', ha='center', va='bottom')
         
+        # Add explanation text below the charts
+        explanation = """EXPLANATION: This chart compares Mean Time to Resolution (MTTR) and Mean Time to Detection (MTD) metrics.
+MTTR measures the average time from when an incident is first detected until it is fully resolved.
+MTD measures the average time from when an incident occurs until it is first detected by security systems.
+Lower values indicate better performance. Working hours exclude weekends and holidays."""
+        
+        self._add_explanation_text(fig, explanation, 'bottom')
+        
         plt.tight_layout()
         
         filename = os.path.join(self.output_dir, 'mttr_mtd_comparison.png')
@@ -98,7 +122,8 @@ class VisualizationGenerator:
         if not non_zero_data:
             return None
         
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+        # Increase figure height to accommodate explanation below
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 10))
         
         # Pie chart
         labels = [k.title() for k in non_zero_data.keys()]
@@ -122,6 +147,15 @@ class VisualizationGenerator:
             ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
                     str(value), ha='center', va='bottom')
         
+        # Add explanation text below the charts
+        explanation = """EXPLANATION: This chart shows how security incidents were resolved.
+The pie chart displays the percentage distribution of resolution types.
+The bar chart shows the actual count of tickets for each resolution type.
+Common resolution types include: Done (resolved), False Positive (incorrect alert), 
+True Positive (confirmed threat), Duplicate (repeated incident), and Testing (test alerts)."""
+        
+        self._add_explanation_text(fig, explanation, 'bottom')
+        
         plt.tight_layout()
         
         filename = os.path.join(self.output_dir, 'resolution_breakdown.png')
@@ -134,7 +168,8 @@ class VisualizationGenerator:
         """Create time distribution histograms"""
         time_data = self.metrics_data['time_distributions']
         
-        fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+        # Increase figure height to accommodate explanation below
+        fig, axes = plt.subplots(1, 3, figsize=(18, 10))
         
         # Detection time distribution
         if time_data['detection_times']:
@@ -166,6 +201,16 @@ class VisualizationGenerator:
                            label=f'Mean: {np.mean(time_data["total_times"]):.1f}h')
             axes[2].legend()
         
+        # Add explanation text below the charts
+        explanation = """EXPLANATION: These histograms show the distribution of time metrics across all incidents.
+Detection Time: Time from incident occurrence to first detection by security systems.
+Resolution Time: Time from first detection to complete resolution of the incident.
+Total Time: Complete time from incident occurrence to resolution.
+The red dashed line shows the mean value. Lower times indicate better performance.
+Wide distributions suggest inconsistent response times, while narrow distributions indicate consistent performance."""
+        
+        self._add_explanation_text(fig, explanation, 'bottom')
+        
         plt.tight_layout()
         
         filename = os.path.join(self.output_dir, 'time_distributions.png')
@@ -191,7 +236,8 @@ class VisualizationGenerator:
                 
             df['week_label'] = df['year'].astype(str) + '-W' + df['week'].astype(str).str.zfill(2)
             
-            fig, axes = plt.subplots(2, 1, figsize=(15, 10))
+            # Increase figure height to accommodate explanation below
+            fig, axes = plt.subplots(2, 1, figsize=(15, 14))
             
             # Ticket count trend
             axes[0].plot(df['week_label'], df['ticket_count'], marker='o', linewidth=2, markersize=6)
@@ -210,6 +256,14 @@ class VisualizationGenerator:
             axes[1].legend()
             axes[1].grid(True, alpha=0.3)
             
+            # Add explanation text below the charts
+            explanation = """EXPLANATION: These charts show trends over time to identify patterns and improvements.
+Top Chart: Weekly ticket volume shows incident frequency trends. Spikes may indicate security events or false positive increases.
+Bottom Chart: Average response times by week. Declining trends indicate improving efficiency.
+Useful for identifying seasonal patterns, security event impacts, and measuring SOC performance improvements over time."""
+            
+            self._add_explanation_text(fig, explanation, 'bottom')
+            
             plt.tight_layout()
             
             filename = os.path.join(self.output_dir, 'weekly_trends.png')
@@ -226,7 +280,8 @@ class VisualizationGenerator:
         """Create percentile comparison charts"""
         percentile_data = self.metrics_data['percentiles']
         
-        fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+        # Increase figure height to accommodate explanation below
+        fig, axes = plt.subplots(1, 3, figsize=(18, 10))
         
         percentiles = [25, 50, 75, 90, 95, 99]
         
@@ -257,6 +312,16 @@ class VisualizationGenerator:
         axes[2].set_xticks(range(len(percentiles)))
         axes[2].set_xticklabels([f'{p}%' for p in percentiles])
         
+        # Add explanation text below the charts
+        explanation = """EXPLANATION: These percentile charts show the distribution of response times across different performance levels.
+25th percentile: 25% of incidents were resolved faster than this time (good performance).
+50th percentile (median): Half of incidents were resolved faster than this time.
+75th percentile: 75% of incidents were resolved faster than this time.
+90th/95th/99th percentiles: Show the worst-case scenarios and outliers.
+Lower values across all percentiles indicate better overall performance and consistency."""
+        
+        self._add_explanation_text(fig, explanation, 'bottom')
+        
         plt.tight_layout()
         
         filename = os.path.join(self.output_dir, 'percentile_charts.png')
@@ -272,7 +337,8 @@ class VisualizationGenerator:
         if not outliers.get('detection_outliers') and not outliers.get('resolution_outliers'):
             return None
         
-        fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+        # Increase figure height to accommodate explanation below
+        fig, axes = plt.subplots(1, 2, figsize=(15, 10))
         
         # Detection outliers
         if outliers.get('detection_outliers'):
@@ -309,6 +375,16 @@ class VisualizationGenerator:
             for i, (bar, z_score) in enumerate(zip(bars, z_scores)):
                 axes[1].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1,
                             f'Z={z_score:.1f}', ha='center', va='bottom', fontsize=8)
+        
+        # Add explanation text below the charts
+        explanation = """EXPLANATION: This chart identifies incidents with unusually long detection or resolution times.
+Outliers are calculated using Z-scores (standard deviations from the mean).
+Z-scores > 2 indicate significant outliers that may need investigation.
+High detection times may indicate security tool failures or missed threats.
+High resolution times may indicate complex incidents or resource constraints.
+Review these outliers to identify systemic issues or areas for improvement."""
+        
+        self._add_explanation_text(fig, explanation, 'bottom')
         
         plt.tight_layout()
         

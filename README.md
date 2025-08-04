@@ -118,6 +118,166 @@ The tool generates comprehensive reports in the `results/` directory:
 - **Text Summaries**: Quick overview and detailed analysis
 - **Raw Data**: Processed data for further analysis
 
+## Chart Explanations
+
+The SOC Metrics Analyzer generates several types of visualizations to help security teams understand their performance metrics. Each chart includes detailed explanations below the visualization.
+
+### 1. MTTR vs MTD Comparison Chart (`mttr_mtd_comparison.png`)
+
+**What it shows:**
+- Mean Time to Resolution (MTTR) metrics in different time units
+- Mean Time to Detection (MTD) metrics in different time units
+- Side-by-side comparison of calendar vs working hours/days
+
+**Key Insights:**
+- **MTTR**: Average time from incident detection to complete resolution
+- **MTD**: Average time from incident occurrence to first detection
+- **Working Hours**: Excludes weekends and holidays for business-focused metrics
+- **Lower values** indicate better performance
+
+**Security Team Use Cases:**
+- Identify bottlenecks in incident response
+- Measure detection system effectiveness
+- Set realistic SLA targets
+- Track performance improvements over time
+
+### 2. Resolution Breakdown Chart (`resolution_breakdown.png`)
+
+**What it shows:**
+- Pie chart showing percentage distribution of resolution types
+- Bar chart showing actual counts for each resolution type
+
+**Resolution Types:**
+- **Done**: Successfully resolved incidents
+- **False Positive**: Incorrect alerts that weren't actual threats
+- **True Positive**: Confirmed security threats
+- **Duplicate**: Repeated incidents already handled
+- **Testing**: Test alerts for system validation
+- **Expected Activity**: Normal business activities flagged by security tools
+
+**Security Team Use Cases:**
+- Assess alert quality and false positive rates
+- Identify areas for security tool tuning
+- Measure incident response effectiveness
+- Plan resource allocation based on incident types
+
+### 3. Time Distribution Charts (`time_distributions.png`)
+
+**What it shows:**
+- Three histograms showing the distribution of:
+  - Detection times (time to first detection)
+  - Resolution times (time from detection to resolution)
+  - Total times (complete incident lifecycle)
+
+**Key Features:**
+- Red dashed line shows the mean value
+- Histogram shape indicates consistency of performance
+- Wide distributions suggest inconsistent response times
+- Narrow distributions indicate consistent performance
+
+**Security Team Use Cases:**
+- Identify outliers and unusual incidents
+- Assess consistency of response times
+- Set realistic performance expectations
+- Identify training or process improvement needs
+
+### 4. Weekly Trends Chart (`weekly_trends.png`)
+
+**What it shows:**
+- Top chart: Weekly ticket volume trends
+- Bottom chart: Average response times by week
+
+**Key Insights:**
+- **Volume trends**: Identify seasonal patterns or security events
+- **Time trends**: Measure performance improvements over time
+- **Spikes**: May indicate security incidents or false positive increases
+- **Declining trends**: Indicate improving efficiency
+
+**Security Team Use Cases:**
+- Plan resource allocation based on volume patterns
+- Measure the impact of process improvements
+- Identify security events that affect workload
+- Set realistic expectations for different time periods
+
+### 5. Percentile Charts (`percentile_charts.png`)
+
+**What it shows:**
+- Three charts showing percentile distributions for:
+  - Detection time percentiles
+  - Resolution time percentiles
+  - Total time percentiles
+
+**Percentile Levels:**
+- **25th percentile**: 25% of incidents were resolved faster (good performance)
+- **50th percentile (median)**: Half of incidents were resolved faster
+- **75th percentile**: 75% of incidents were resolved faster
+- **90th/95th/99th percentiles**: Show the worst-case scenarios and outliers
+
+**Security Team Use Cases:**
+- Set realistic SLA targets based on actual performance
+- Identify performance consistency across different time periods
+- Plan for worst-case scenarios
+- Measure improvements across all performance levels
+
+### 6. Outlier Analysis Chart (`outlier_analysis.png`)
+
+**What it shows:**
+- Top detection time outliers with Z-scores
+- Top resolution time outliers with Z-scores
+- Incidents with unusually long response times
+
+**Z-Score Explanation:**
+- **Z-score > 2**: Significant outlier requiring investigation
+- **Z-score > 3**: Extreme outlier indicating potential issues
+- **High detection times**: May indicate security tool failures
+- **High resolution times**: May indicate complex incidents or resource constraints
+
+**Security Team Use Cases:**
+- Identify incidents requiring post-mortem analysis
+- Find systemic issues affecting performance
+- Prioritize process improvements
+- Validate SLA exceptions and escalations
+
+### Performance Benchmarks
+
+#### Excellent Performance
+- **MTTR**: < 4 hours (working hours)
+- **MTD**: < 1 hour (working hours)
+- **False Positive Rate**: < 10%
+- **SLA Compliance**: > 95%
+
+#### Good Performance
+- **MTTR**: 4-8 hours (working hours)
+- **MTD**: 1-2 hours (working hours)
+- **False Positive Rate**: 10-20%
+- **SLA Compliance**: 90-95%
+
+#### Needs Improvement
+- **MTTR**: > 8 hours (working hours)
+- **MTD**: > 2 hours (working hours)
+- **False Positive Rate**: > 20%
+- **SLA Compliance**: < 90%
+
+### Chart Interpretation Tips
+
+#### Reading the Charts
+1. **Always check the explanation box** below each chart
+2. **Compare metrics** across different time periods
+3. **Look for trends** rather than single data points
+4. **Consider context** when interpreting outliers
+
+#### Common Patterns
+1. **Improving trends**: Declining MTTR/MTD over time
+2. **Seasonal patterns**: Regular volume fluctuations
+3. **Tool issues**: High false positive rates or detection delays
+4. **Process bottlenecks**: Wide time distributions or high outliers
+
+#### Red Flags
+1. **Increasing MTTR**: May indicate resource constraints or process issues
+2. **High false positive rates**: May indicate tool tuning needed
+3. **Frequent outliers**: May indicate inconsistent processes
+4. **Declining volume**: May indicate missed threats or tool failures
+
 ## Project Structure
 
 ```
