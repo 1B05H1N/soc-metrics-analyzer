@@ -63,10 +63,10 @@ class VisualizationGenerator:
         return generated_files
     
     def _add_explanation_text(self, fig, explanation: str, position: str = 'bottom'):
-        """Add explanation text to the figure below the charts"""
+        """Add explanation text to the figure below the charts without overlap"""
         if position == 'bottom':
-            # Add explanation text below the charts with professional styling
-            fig.text(0.02, 0.02, explanation, transform=fig.transFigure, 
+            # Add explanation text below the charts with proper spacing
+            fig.text(0.02, 0.01, explanation, transform=fig.transFigure, 
                     fontsize=9, verticalalignment='bottom', 
                     bbox=dict(boxstyle='round,pad=0.8', 
                              facecolor='#F8F9FA', 
@@ -88,9 +88,9 @@ class VisualizationGenerator:
         mttr_data = self.metrics_data['mttr']
         mtd_data = self.metrics_data['mtd']
         
-        # Create figure with enhanced styling
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
-        fig.suptitle('SOC Performance Metrics Comparison', fontsize=16, fontweight='bold', y=0.95)
+        # Create figure with extra height for explanation
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 10))
+        fig.suptitle('SOC Performance Metrics Comparison', fontsize=16, fontweight='bold', y=0.92)
         
         # MTTR Chart
         categories = ['Calendar\nHours', 'Working\nHours', 'Calendar\nDays', 'Working\nDays']
@@ -139,7 +139,8 @@ Lower values indicate better performance. Working hours exclude weekends and hol
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        plt.tight_layout()
+        # Adjust layout to make room for explanation
+        plt.subplots_adjust(bottom=0.15)
         
         filename = os.path.join(self.output_dir, 'mttr_mtd_comparison.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -157,9 +158,9 @@ Lower values indicate better performance. Working hours exclude weekends and hol
         if not non_zero_data:
             return None
         
-        # Create figure with enhanced styling
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
-        fig.suptitle('Security Incident Resolution Analysis', fontsize=16, fontweight='bold', y=0.95)
+        # Create figure with extra height for explanation
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 10))
+        fig.suptitle('Security Incident Resolution Analysis', fontsize=16, fontweight='bold', y=0.92)
         
         # Professional color palette
         colors = [self.colors['primary'], self.colors['secondary'], self.colors['success'], 
@@ -199,7 +200,8 @@ True Positive (confirmed threat), Duplicate (repeated incident), and Testing (te
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        plt.tight_layout()
+        # Adjust layout to make room for explanation
+        plt.subplots_adjust(bottom=0.15)
         
         filename = os.path.join(self.output_dir, 'resolution_breakdown.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -211,9 +213,9 @@ True Positive (confirmed threat), Duplicate (repeated incident), and Testing (te
         """Create time distribution histograms with enhanced styling"""
         time_data = self.metrics_data['time_distributions']
         
-        # Create figure with enhanced styling
-        fig, axes = plt.subplots(1, 3, figsize=(18, 8))
-        fig.suptitle('Response Time Distribution Analysis', fontsize=16, fontweight='bold', y=0.95)
+        # Create figure with extra height for explanation
+        fig, axes = plt.subplots(1, 3, figsize=(18, 10))
+        fig.suptitle('Response Time Distribution Analysis', fontsize=16, fontweight='bold', y=0.92)
         
         # Detection time distribution
         if time_data['detection_times']:
@@ -264,7 +266,8 @@ Wide distributions suggest inconsistent response times, while narrow distributio
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        plt.tight_layout()
+        # Adjust layout to make room for explanation
+        plt.subplots_adjust(bottom=0.15)
         
         filename = os.path.join(self.output_dir, 'time_distributions.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -289,9 +292,9 @@ Wide distributions suggest inconsistent response times, while narrow distributio
                 
             df['week_label'] = df['year'].astype(str) + '-W' + df['week'].astype(str).str.zfill(2)
             
-            # Create figure with enhanced styling
-            fig, axes = plt.subplots(2, 1, figsize=(16, 12))
-            fig.suptitle('SOC Performance Trends Over Time', fontsize=16, fontweight='bold', y=0.95)
+            # Create figure with extra height for explanation
+            fig, axes = plt.subplots(2, 1, figsize=(16, 14))
+            fig.suptitle('SOC Performance Trends Over Time', fontsize=16, fontweight='bold', y=0.94)
             
             # Ticket count trend
             axes[0].plot(df['week_label'], df['ticket_count'], marker='o', linewidth=3, 
@@ -324,7 +327,8 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
             
             self._add_explanation_text(fig, explanation, 'bottom')
             
-            plt.tight_layout()
+            # Adjust layout to make room for explanation
+            plt.subplots_adjust(bottom=0.12)
             
             filename = os.path.join(self.output_dir, 'weekly_trends.png')
             plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -340,9 +344,9 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
         """Create percentile comparison charts with enhanced styling"""
         percentile_data = self.metrics_data['percentiles']
         
-        # Create figure with enhanced styling
-        fig, axes = plt.subplots(1, 3, figsize=(18, 8))
-        fig.suptitle('Response Time Performance Percentiles', fontsize=16, fontweight='bold', y=0.95)
+        # Create figure with extra height for explanation
+        fig, axes = plt.subplots(1, 3, figsize=(18, 10))
+        fig.suptitle('Response Time Performance Percentiles', fontsize=16, fontweight='bold', y=0.92)
         
         percentiles = [25, 50, 75, 90, 95, 99]
         
@@ -400,7 +404,8 @@ Lower values across all percentiles indicate better overall performance and cons
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        plt.tight_layout()
+        # Adjust layout to make room for explanation
+        plt.subplots_adjust(bottom=0.15)
         
         filename = os.path.join(self.output_dir, 'percentile_charts.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -415,9 +420,9 @@ Lower values across all percentiles indicate better overall performance and cons
         if not outliers.get('detection_outliers') and not outliers.get('resolution_outliers'):
             return None
         
-        # Create figure with enhanced styling
-        fig, axes = plt.subplots(1, 2, figsize=(16, 8))
-        fig.suptitle('Response Time Outlier Analysis', fontsize=16, fontweight='bold', y=0.95)
+        # Create figure with extra height for explanation
+        fig, axes = plt.subplots(1, 2, figsize=(16, 10))
+        fig.suptitle('Response Time Outlier Analysis', fontsize=16, fontweight='bold', y=0.92)
         
         # Detection outliers
         if outliers.get('detection_outliers'):
@@ -471,7 +476,8 @@ Review these outliers to identify systemic issues or areas for improvement."""
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        plt.tight_layout()
+        # Adjust layout to make room for explanation
+        plt.subplots_adjust(bottom=0.15)
         
         filename = os.path.join(self.output_dir, 'outlier_analysis.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
