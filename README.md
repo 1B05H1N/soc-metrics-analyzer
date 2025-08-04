@@ -108,6 +108,336 @@ python main_direct.py --analysis-type BOTH --time-period ALL_TIME
 ./scripts/check_cron_status.sh
 ```
 
+## Automated Scheduling & Scripts
+
+The SOC Metrics Analyzer includes a comprehensive set of scripts for automated scheduling and maintenance. These scripts enable hands-off operation for regular reporting and system maintenance.
+
+### Available Scripts
+
+#### 1. `setup_cron_jobs.sh` - Initial Setup
+**Purpose**: Creates the cron job configuration and necessary directories.
+
+**What it does**:
+- Creates cron job configuration file (`soc_metrics_cron.txt`)
+- Sets up necessary directories for logs and reports
+- Creates wrapper script for better error handling
+- Configures automated cleanup jobs
+
+**Usage**:
+```bash
+./scripts/setup_cron_jobs.sh
+```
+
+**Generated Cron Jobs**:
+- **Weekly Report**: Every Monday at 9:00 AM (LAST_WEEK analysis)
+- **Monthly Report**: First day of month at 9:00 AM (LAST_MONTH analysis)
+- **Quarterly Report**: First day of quarter at 9:00 AM (LAST_QUARTER analysis)
+- **Yearly Report**: January 1st at 9:00 AM (LAST_YEAR analysis)
+- **Daily Health Check**: Every day at 6:00 AM (quick validation)
+- **Log Rotation**: Every Sunday at 2:00 AM (removes logs older than 30 days)
+- **Report Cleanup**: Every Sunday at 3:00 AM (removes reports older than 90 days)
+
+#### 2. `install_cron.sh` - Install Cron Jobs
+**Purpose**: Installs the configured cron jobs into the system.
+
+**What it does**:
+- Checks for existing SOC Metrics cron jobs
+- Removes old entries if found
+- Installs new cron jobs from configuration
+- Provides status feedback
+
+**Usage**:
+```bash
+./scripts/install_cron.sh
+```
+
+**Prerequisites**:
+- Must run `setup_cron_jobs.sh` first
+- Requires crontab access
+
+#### 3. `check_cron_status.sh` - Status Monitoring
+**Purpose**: Comprehensive status check of the automated system.
+
+**What it checks**:
+- Cron job installation status
+- Recent log entries
+- Report generation status
+- Python environment
+- Configuration file existence
+
+**Usage**:
+```bash
+./scripts/check_cron_status.sh
+```
+
+**Output includes**:
+- List of installed cron jobs
+- Recent log entries
+- Number of reports generated in last 7 days
+- Python version and availability
+- Configuration file status
+
+#### 4. `uninstall_cron.sh` - Remove Cron Jobs
+**Purpose**: Safely removes all SOC Metrics cron jobs.
+
+**What it does**:
+- Identifies SOC Metrics cron jobs
+- Removes them from crontab
+- Provides confirmation
+
+**Usage**:
+```bash
+./scripts/uninstall_cron.sh
+```
+
+#### 5. `run_soc_metrics.sh` - Wrapper Script
+**Purpose**: Provides robust error handling and logging for cron jobs.
+
+**Features**:
+- Prevents multiple simultaneous runs
+- Comprehensive error logging
+- Lock file management
+- Environment validation
+
+**Usage**:
+```bash
+./scripts/run_soc_metrics.sh [analysis_arguments]
+```
+
+### Complete Setup Process
+
+#### Step 1: Initial Setup
+```bash
+# Navigate to project directory
+cd soc-metrics-analyzer
+
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Setup cron jobs configuration
+./scripts/setup_cron_jobs.sh
+```
+
+#### Step 2: Configure Environment
+```bash
+# Copy environment template
+cp env_example.txt .env
+
+# Edit configuration
+nano .env
+```
+
+**Required Configuration**:
+```bash
+# Jira Configuration
+JIRA_SERVER=https://your-domain.atlassian.net
+JIRA_USERNAME=your-email@domain.com
+JIRA_API_TOKEN=your-api-token
+PROJECT_KEY=YOUR_PROJECT_KEY
+
+# Analysis Configuration
+ANALYSIS_TYPE=BOTH
+TIME_PERIOD=LAST_WEEK
+MAX_ISSUES=10000
+```
+
+#### Step 3: Install Cron Jobs
+```bash
+# Install automated cron jobs
+./scripts/install_cron.sh
+```
+
+#### Step 4: Verify Installation
+```bash
+# Check system status
+./scripts/check_cron_status.sh
+```
+
+### Maintenance & Monitoring
+
+#### Daily Monitoring
+```bash
+# Check recent logs
+tail -f results/logs/cron.log
+
+# Check for errors
+tail -f results/logs/cron_error.log
+
+# View recent reports
+ls -la results/reports/
+```
+
+#### Weekly Maintenance
+```bash
+# Check system status
+./scripts/check_cron_status.sh
+
+# Review log files
+find results/logs/ -name "*.log" -mtime -7 -exec ls -la {} \;
+
+# Check report generation
+find results/reports/ -name "*.xlsx" -mtime -7 | wc -l
+```
+
+#### Monthly Maintenance
+```bash
+# Review cron job performance
+grep "ERROR" results/logs/cron.log | tail -20
+
+# Check disk usage
+du -sh results/
+
+# Verify configuration
+cat .env | grep -E "(JIRA_|PROJECT_)"
+```
+
+### Troubleshooting Automated Jobs
+
+#### Common Issues
+
+**1. Cron Jobs Not Running**
+```bash
+# Check cron service status
+sudo systemctl status cron
+
+# Verify cron jobs are installed
+crontab -l | grep soc_metrics
+
+# Check cron logs
+sudo tail -f /var/log/cron
+```
+
+**2. Permission Issues**
+```bash
+# Ensure scripts are executable
+chmod +x scripts/*.sh
+
+# Check file ownership
+ls -la scripts/
+
+# Verify Python path in cron
+which python3
+```
+
+**3. Environment Issues**
+```bash
+# Test manual run
+./scripts/run_soc_metrics.sh --time-period LAST_WEEK --max-issues 10
+
+# Check Python environment
+python3 --version
+pip list | grep -E "(jira|pandas|matplotlib)"
+
+# Verify .env file
+cat .env
+```
+
+**4. Log Analysis**
+```bash
+# Check recent errors
+grep "ERROR" results/logs/cron.log | tail -10
+
+# Check successful runs
+grep "completed successfully" results/logs/cron.log | tail -5
+
+# Monitor real-time
+tail -f results/logs/cron.log
+```
+
+### Customization
+
+#### Modify Schedule
+Edit `scripts/soc_metrics_cron.txt` to change timing:
+```bash
+# Example: Run weekly report on Fridays at 5 PM
+0 17 * * 5 cd /path/to/project && python3 main_direct.py --time-period LAST_WEEK --analysis-type BOTH
+
+# Example: Run daily at midnight
+0 0 * * * cd /path/to/project && python3 main_direct.py --time-period LAST_WEEK --analysis-type ALL_TICKETS
+```
+
+#### Add Custom Reports
+```bash
+# Add to cron configuration
+echo "0 10 1 * * cd $PROJECT_DIR && python3 main_direct.py --time-period ALL_TIME --analysis-type BOTH" >> scripts/soc_metrics_cron.txt
+
+# Reinstall cron jobs
+./scripts/install_cron.sh
+```
+
+#### Email Notifications
+Enable email notifications in `.env`:
+```bash
+ENABLE_EMAIL_NOTIFICATIONS=true
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+EMAIL_USERNAME=your-email@domain.com
+EMAIL_PASSWORD=your-app-password
+NOTIFICATION_RECIPIENTS=soc@yourcompany.com
+```
+
+### Security Considerations
+
+#### File Permissions
+```bash
+# Secure sensitive files
+chmod 600 .env
+chmod 600 results/logs/*.log
+
+# Restrict script access
+chmod 755 scripts/*.sh
+```
+
+#### Log Rotation
+```bash
+# Manual log cleanup
+find results/logs/ -name "*.log" -mtime +30 -delete
+
+# Manual report cleanup
+find results/reports/ -name "*.xlsx" -mtime +90 -delete
+```
+
+#### Monitoring
+```bash
+# Set up monitoring alerts
+echo "*/5 * * * * ./scripts/check_cron_status.sh | grep -q 'ERROR' && echo 'SOC Metrics Error Detected'" | crontab -
+
+# Monitor disk usage
+echo "0 2 * * * df -h | grep -q '90%' && echo 'Disk space low'" | crontab -
+```
+
+### Best Practices
+
+#### 1. Regular Monitoring
+- Check logs weekly for errors
+- Monitor disk usage monthly
+- Review report quality quarterly
+- Update configurations as needed
+
+#### 2. Backup Strategy
+```bash
+# Backup configuration
+cp .env .env.backup.$(date +%Y%m%d)
+
+# Backup reports
+tar -czf reports_backup_$(date +%Y%m%d).tar.gz results/reports/
+
+# Backup logs
+tar -czf logs_backup_$(date +%Y%m%d).tar.gz results/logs/
+```
+
+#### 3. Performance Optimization
+- Adjust `MAX_ISSUES` based on your data volume
+- Use `--no-reports` for health checks
+- Monitor API rate limits
+- Consider timezone settings
+
+#### 4. Documentation
+- Keep configuration changes documented
+- Record any customizations
+- Maintain runbook for troubleshooting
+- Update team on schedule changes
+
 ## Output
 
 The tool generates comprehensive reports in the `results/` directory:
@@ -389,8 +719,8 @@ ENABLE_EMAIL_NOTIFICATIONS=true
 SMTP_SERVER=smtp.gmail.com
 SMTP_PORT=587
 EMAIL_USERNAME=your-email@domain.com
-EMAIL_PASSWORD=your-email-password
-NOTIFICATION_RECIPIENTS=soc@domain.com
+EMAIL_PASSWORD=your-app-password
+NOTIFICATION_RECIPIENTS=soc@yourcompany.com
 ```
 
 **Note**: Only configure email notifications if you specifically need them. The tool works perfectly without any notification settings.
