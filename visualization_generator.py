@@ -90,7 +90,7 @@ class VisualizationGenerator:
         
         # Create figure with extra height for explanation
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 10))
-        fig.suptitle('SOC Performance Metrics Comparison', fontsize=16, fontweight='bold', y=0.92)
+        fig.suptitle('SOC Performance Metrics Comparison', fontsize=16, fontweight='bold', y=0.95)
         
         # MTTR Chart
         categories = ['Calendar\nHours', 'Working\nHours', 'Calendar\nDays', 'Working\nDays']
@@ -102,7 +102,7 @@ class VisualizationGenerator:
         ]
         
         bars1 = ax1.bar(categories, mttr_values, color=self.colors['primary'], alpha=0.8, edgecolor='white', linewidth=1)
-        ax1.set_title('Mean Time to Resolution (MTTR)', fontsize=14, fontweight='bold', pad=20)
+        ax1.set_title('Mean Time to Resolution (MTTR)', fontsize=14, fontweight='bold', pad=25)
         ax1.set_ylabel('Time (Hours/Days)', fontweight='bold')
         ax1.grid(axis='y', alpha=0.3, linestyle='--')
         
@@ -121,7 +121,7 @@ class VisualizationGenerator:
         ]
         
         bars2 = ax2.bar(categories, mtd_values, color=self.colors['secondary'], alpha=0.8, edgecolor='white', linewidth=1)
-        ax2.set_title('Mean Time to Detection (MTD)', fontsize=14, fontweight='bold', pad=20)
+        ax2.set_title('Mean Time to Detection (MTD)', fontsize=14, fontweight='bold', pad=25)
         ax2.set_ylabel('Time (Hours/Days)', fontweight='bold')
         ax2.grid(axis='y', alpha=0.3, linestyle='--')
         
@@ -139,8 +139,8 @@ Lower values indicate better performance. Working hours exclude weekends and hol
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        # Adjust layout to make room for explanation
-        plt.subplots_adjust(bottom=0.15)
+        # Adjust layout to make room for explanation and prevent title overlap
+        plt.subplots_adjust(bottom=0.15, top=0.88, hspace=0.3)
         
         filename = os.path.join(self.output_dir, 'mttr_mtd_comparison.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -160,7 +160,7 @@ Lower values indicate better performance. Working hours exclude weekends and hol
         
         # Create figure with extra height for explanation
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 10))
-        fig.suptitle('Security Incident Resolution Analysis', fontsize=16, fontweight='bold', y=0.92)
+        fig.suptitle('Security Incident Resolution Analysis', fontsize=16, fontweight='bold', y=0.95)
         
         # Professional color palette
         colors = [self.colors['primary'], self.colors['secondary'], self.colors['success'], 
@@ -173,13 +173,13 @@ Lower values indicate better performance. Working hours exclude weekends and hol
         wedges, texts, autotexts = ax1.pie(sizes, labels=labels, autopct='%1.1f%%',
                                            colors=colors[:len(sizes)], startangle=90,
                                            textprops={'fontsize': 10, 'fontweight': 'bold'})
-        ax1.set_title('Resolution Distribution (%)', fontsize=14, fontweight='bold', pad=20)
+        ax1.set_title('Resolution Distribution (%)', fontsize=14, fontweight='bold', pad=25)
         
         # Bar chart
         x_pos = np.arange(len(labels))
         bars = ax2.bar(x_pos, sizes, color=colors[:len(sizes)], alpha=0.8, 
                       edgecolor='white', linewidth=1)
-        ax2.set_title('Resolution Counts', fontsize=14, fontweight='bold', pad=20)
+        ax2.set_title('Resolution Counts', fontsize=14, fontweight='bold', pad=25)
         ax2.set_ylabel('Number of Incidents', fontweight='bold')
         ax2.set_xticks(x_pos)
         ax2.set_xticklabels(labels, rotation=45, ha='right', fontsize=10)
@@ -200,8 +200,8 @@ True Positive (confirmed threat), Duplicate (repeated incident), and Testing (te
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        # Adjust layout to make room for explanation
-        plt.subplots_adjust(bottom=0.15)
+        # Adjust layout to make room for explanation and prevent title overlap
+        plt.subplots_adjust(bottom=0.15, top=0.88, hspace=0.3)
         
         filename = os.path.join(self.output_dir, 'resolution_breakdown.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -215,45 +215,45 @@ True Positive (confirmed threat), Duplicate (repeated incident), and Testing (te
         
         # Create figure with extra height for explanation
         fig, axes = plt.subplots(1, 3, figsize=(18, 10))
-        fig.suptitle('Response Time Distribution Analysis', fontsize=16, fontweight='bold', y=0.92)
+        fig.suptitle('Response Time Distribution Analysis', fontsize=16, fontweight='bold', y=0.95)
         
         # Detection time distribution
         if time_data['detection_times']:
             axes[0].hist(time_data['detection_times'], bins=20, alpha=0.7, 
                         color=self.colors['light_blue'], edgecolor='white', linewidth=1)
-            axes[0].set_title('Detection Time Distribution', fontweight='bold', pad=20)
+            axes[0].set_title('Detection Time Distribution', fontweight='bold', pad=25)
             axes[0].set_xlabel('Time (Hours)', fontweight='bold')
             axes[0].set_ylabel('Number of Incidents', fontweight='bold')
             mean_detection = np.mean(time_data['detection_times'])
             axes[0].axvline(mean_detection, color=self.colors['warning'], linestyle='--', 
                            linewidth=2, label=f'Mean: {mean_detection:.1f}h')
-            axes[0].legend(fontsize=10)
+            axes[0].legend(fontsize=10, loc='upper right')
             axes[0].grid(axis='y', alpha=0.3, linestyle='--')
         
         # Resolution time distribution
         if time_data['resolution_times']:
             axes[1].hist(time_data['resolution_times'], bins=20, alpha=0.7, 
                         color=self.colors['light_coral'], edgecolor='white', linewidth=1)
-            axes[1].set_title('Resolution Time Distribution', fontweight='bold', pad=20)
+            axes[1].set_title('Resolution Time Distribution', fontweight='bold', pad=25)
             axes[1].set_xlabel('Time (Hours)', fontweight='bold')
             axes[1].set_ylabel('Number of Incidents', fontweight='bold')
             mean_resolution = np.mean(time_data['resolution_times'])
             axes[1].axvline(mean_resolution, color=self.colors['warning'], linestyle='--',
                            linewidth=2, label=f'Mean: {mean_resolution:.1f}h')
-            axes[1].legend(fontsize=10)
+            axes[1].legend(fontsize=10, loc='upper right')
             axes[1].grid(axis='y', alpha=0.3, linestyle='--')
         
         # Total time distribution
         if time_data['total_times']:
             axes[2].hist(time_data['total_times'], bins=20, alpha=0.7, 
                         color=self.colors['light_green'], edgecolor='white', linewidth=1)
-            axes[2].set_title('Total Time Distribution', fontweight='bold', pad=20)
+            axes[2].set_title('Total Time Distribution', fontweight='bold', pad=25)
             axes[2].set_xlabel('Time (Hours)', fontweight='bold')
             axes[2].set_ylabel('Number of Incidents', fontweight='bold')
             mean_total = np.mean(time_data['total_times'])
             axes[2].axvline(mean_total, color=self.colors['warning'], linestyle='--',
                            linewidth=2, label=f'Mean: {mean_total:.1f}h')
-            axes[2].legend(fontsize=10)
+            axes[2].legend(fontsize=10, loc='upper right')
             axes[2].grid(axis='y', alpha=0.3, linestyle='--')
         
         # Add explanation text below the charts
@@ -266,8 +266,8 @@ Wide distributions suggest inconsistent response times, while narrow distributio
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        # Adjust layout to make room for explanation
-        plt.subplots_adjust(bottom=0.15)
+        # Adjust layout to make room for explanation and prevent title overlap
+        plt.subplots_adjust(bottom=0.15, top=0.88, hspace=0.3)
         
         filename = os.path.join(self.output_dir, 'time_distributions.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -294,12 +294,12 @@ Wide distributions suggest inconsistent response times, while narrow distributio
             
             # Create figure with extra height for explanation
             fig, axes = plt.subplots(2, 1, figsize=(16, 14))
-            fig.suptitle('SOC Performance Trends Over Time', fontsize=16, fontweight='bold', y=0.94)
+            fig.suptitle('SOC Performance Trends Over Time', fontsize=16, fontweight='bold', y=0.96)
             
             # Ticket count trend
             axes[0].plot(df['week_label'], df['ticket_count'], marker='o', linewidth=3, 
                         markersize=8, color=self.colors['primary'], alpha=0.8)
-            axes[0].set_title('Weekly Incident Volume', fontweight='bold', pad=20)
+            axes[0].set_title('Weekly Incident Volume', fontweight='bold', pad=25)
             axes[0].set_ylabel('Number of Incidents', fontweight='bold')
             axes[0].tick_params(axis='x', rotation=45)
             axes[0].grid(True, alpha=0.3, linestyle='--')
@@ -312,7 +312,7 @@ Wide distributions suggest inconsistent response times, while narrow distributio
                         label='Resolution Time', linewidth=3, markersize=8, color=self.colors['secondary'])
             axes[1].plot(df['week_label'], df['avg_total_time'], marker='^', 
                         label='Total Time', linewidth=3, markersize=8, color=self.colors['success'])
-            axes[1].set_title('Weekly Average Response Times', fontweight='bold', pad=20)
+            axes[1].set_title('Weekly Average Response Times', fontweight='bold', pad=25)
             axes[1].set_ylabel('Time (Hours)', fontweight='bold')
             axes[1].tick_params(axis='x', rotation=45)
             axes[1].legend(fontsize=10, loc='upper right')
@@ -327,8 +327,8 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
             
             self._add_explanation_text(fig, explanation, 'bottom')
             
-            # Adjust layout to make room for explanation
-            plt.subplots_adjust(bottom=0.12)
+            # Adjust layout to make room for explanation and prevent title overlap
+            plt.subplots_adjust(bottom=0.12, top=0.92, hspace=0.4)
             
             filename = os.path.join(self.output_dir, 'weekly_trends.png')
             plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -346,7 +346,7 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
         
         # Create figure with extra height for explanation
         fig, axes = plt.subplots(1, 3, figsize=(18, 10))
-        fig.suptitle('Response Time Performance Percentiles', fontsize=16, fontweight='bold', y=0.92)
+        fig.suptitle('Response Time Performance Percentiles', fontsize=16, fontweight='bold', y=0.95)
         
         percentiles = [25, 50, 75, 90, 95, 99]
         
@@ -355,7 +355,7 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
         bars1 = axes[0].bar(range(len(percentiles)), detection_values, 
                            color=self.colors['light_blue'], alpha=0.8, 
                            edgecolor='white', linewidth=1)
-        axes[0].set_title('Detection Time Percentiles', fontweight='bold', pad=20)
+        axes[0].set_title('Detection Time Percentiles', fontweight='bold', pad=25)
         axes[0].set_xlabel('Percentile', fontweight='bold')
         axes[0].set_ylabel('Time (Hours)', fontweight='bold')
         axes[0].set_xticks(range(len(percentiles)))
@@ -367,7 +367,7 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
         bars2 = axes[1].bar(range(len(percentiles)), resolution_values, 
                            color=self.colors['light_coral'], alpha=0.8, 
                            edgecolor='white', linewidth=1)
-        axes[1].set_title('Resolution Time Percentiles', fontweight='bold', pad=20)
+        axes[1].set_title('Resolution Time Percentiles', fontweight='bold', pad=25)
         axes[1].set_xlabel('Percentile', fontweight='bold')
         axes[1].set_ylabel('Time (Hours)', fontweight='bold')
         axes[1].set_xticks(range(len(percentiles)))
@@ -379,7 +379,7 @@ Useful for identifying seasonal patterns, security event impacts, and measuring 
         bars3 = axes[2].bar(range(len(percentiles)), total_values, 
                            color=self.colors['light_green'], alpha=0.8, 
                            edgecolor='white', linewidth=1)
-        axes[2].set_title('Total Time Percentiles', fontweight='bold', pad=20)
+        axes[2].set_title('Total Time Percentiles', fontweight='bold', pad=25)
         axes[2].set_xlabel('Percentile', fontweight='bold')
         axes[2].set_ylabel('Time (Hours)', fontweight='bold')
         axes[2].set_xticks(range(len(percentiles)))
@@ -404,8 +404,8 @@ Lower values across all percentiles indicate better overall performance and cons
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        # Adjust layout to make room for explanation
-        plt.subplots_adjust(bottom=0.15)
+        # Adjust layout to make room for explanation and prevent title overlap
+        plt.subplots_adjust(bottom=0.15, top=0.88, hspace=0.3)
         
         filename = os.path.join(self.output_dir, 'percentile_charts.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
@@ -422,7 +422,7 @@ Lower values across all percentiles indicate better overall performance and cons
         
         # Create figure with extra height for explanation
         fig, axes = plt.subplots(1, 2, figsize=(16, 10))
-        fig.suptitle('Response Time Outlier Analysis', fontsize=16, fontweight='bold', y=0.92)
+        fig.suptitle('Response Time Outlier Analysis', fontsize=16, fontweight='bold', y=0.95)
         
         # Detection outliers
         if outliers.get('detection_outliers'):
@@ -433,7 +433,7 @@ Lower values across all percentiles indicate better overall performance and cons
             
             bars1 = axes[0].bar(range(len(keys)), times, color=self.colors['light_red'], 
                                alpha=0.8, edgecolor='white', linewidth=1)
-            axes[0].set_title('Top Detection Time Outliers', fontweight='bold', pad=20)
+            axes[0].set_title('Top Detection Time Outliers', fontweight='bold', pad=25)
             axes[0].set_ylabel('Time (Hours)', fontweight='bold')
             axes[0].set_xticks(range(len(keys)))
             axes[0].set_xticklabels(keys, rotation=45, ha='right', fontsize=9)
@@ -454,7 +454,7 @@ Lower values across all percentiles indicate better overall performance and cons
             
             bars2 = axes[1].bar(range(len(keys)), times, color=self.colors['light_orange'], 
                                alpha=0.8, edgecolor='white', linewidth=1)
-            axes[1].set_title('Top Resolution Time Outliers', fontweight='bold', pad=20)
+            axes[1].set_title('Top Resolution Time Outliers', fontweight='bold', pad=25)
             axes[1].set_ylabel('Time (Hours)', fontweight='bold')
             axes[1].set_xticks(range(len(keys)))
             axes[1].set_xticklabels(keys, rotation=45, ha='right', fontsize=9)
@@ -476,8 +476,8 @@ Review these outliers to identify systemic issues or areas for improvement."""
         
         self._add_explanation_text(fig, explanation, 'bottom')
         
-        # Adjust layout to make room for explanation
-        plt.subplots_adjust(bottom=0.15)
+        # Adjust layout to make room for explanation and prevent title overlap
+        plt.subplots_adjust(bottom=0.15, top=0.88, hspace=0.3)
         
         filename = os.path.join(self.output_dir, 'outlier_analysis.png')
         plt.savefig(filename, dpi=300, bbox_inches='tight', facecolor='white')
