@@ -34,7 +34,7 @@ fi
 # Add new cron jobs
 crontab "$CRON_FILE"
 
-echo -e "${GREEN}✓ Cron jobs installed successfully!${NC}"
+echo -e "${GREEN} Cron jobs installed successfully!${NC}"
 echo -e "${BLUE}Current cron jobs:${NC}"
 crontab -l | grep -E "(soc_metrics|SOC Metrics)"
 

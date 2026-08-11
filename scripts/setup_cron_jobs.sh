@@ -85,7 +85,7 @@ cat > "$CRON_FILE" << EOF
 0 3 * * 0 find $PROJECT_DIR/results/reports -name "*.png" -mtime +90 -delete >> $LOG_FILE 2>&1
 EOF
 
-echo -e "${GREEN}✓ Cron jobs configuration created: $CRON_FILE${NC}"
+echo -e "${GREEN} Cron jobs configuration created: $CRON_FILE${NC}"
 
 # Create a wrapper script for better error handling
 echo -e "${BLUE}Creating wrapper script for better error handling...${NC}"
@@ -158,7 +158,7 @@ fi
 EOF
 
 chmod +x "$SCRIPT_DIR/run_soc_metrics.sh"
-echo -e "${GREEN}✓ Wrapper script created: $SCRIPT_DIR/run_soc_metrics.sh${NC}"
+echo -e "${GREEN} Wrapper script created: $SCRIPT_DIR/run_soc_metrics.sh${NC}"
 
 # Create installation script
 echo -e "${BLUE}Creating installation script...${NC}"
@@ -200,7 +200,7 @@ fi
 # Add new cron jobs
 crontab "$CRON_FILE"
 
-echo -e "${GREEN}✓ Cron jobs installed successfully!${NC}"
+echo -e "${GREEN} Cron jobs installed successfully!${NC}"
 echo -e "${BLUE}Current cron jobs:${NC}"
 crontab -l | grep -E "(soc_metrics|SOC Metrics)"
 
@@ -209,7 +209,7 @@ echo -e "${BLUE}To remove cron jobs: crontab -e${NC}"
 EOF
 
 chmod +x "$SCRIPT_DIR/install_cron.sh"
-echo -e "${GREEN}✓ Installation script created: $SCRIPT_DIR/install_cron.sh${NC}"
+echo -e "${GREEN} Installation script created: $SCRIPT_DIR/install_cron.sh${NC}"
 
 # Create uninstall script
 echo -e "${BLUE}Creating uninstall script...${NC}"
@@ -230,14 +230,14 @@ echo -e "${BLUE}Removing SOC Metrics Analyzer cron jobs...${NC}"
 # Remove cron jobs
 if crontab -l 2>/dev/null | grep -q "soc_metrics"; then
     crontab -l 2>/dev/null | grep -v "soc_metrics" | crontab -
-    echo -e "${GREEN}✓ Cron jobs removed successfully!${NC}"
+    echo -e "${GREEN} Cron jobs removed successfully!${NC}"
 else
     echo -e "${YELLOW}No SOC Metrics cron jobs found${NC}"
 fi
 EOF
 
 chmod +x "$SCRIPT_DIR/uninstall_cron.sh"
-echo -e "${GREEN}✓ Uninstall script created: $SCRIPT_DIR/uninstall_cron.sh${NC}"
+echo -e "${GREEN} Uninstall script created: $SCRIPT_DIR/uninstall_cron.sh${NC}"
 
 # Create status check script
 echo -e "${BLUE}Creating status check script...${NC}"
@@ -263,22 +263,22 @@ echo -e "${BLUE}========================================${NC}"
 # Check if cron jobs are installed
 echo -e "${BLUE}Checking cron jobs...${NC}"
 if crontab -l 2>/dev/null | grep -q "soc_metrics"; then
-    echo -e "${GREEN}✓ Cron jobs are installed:${NC}"
+    echo -e "${GREEN} Cron jobs are installed:${NC}"
     crontab -l | grep -E "(soc_metrics|SOC Metrics)" | while read -r line; do
         echo "  $line"
     done
 else
-    echo -e "${RED}✗ No SOC Metrics cron jobs found${NC}"
+    echo -e "${RED} No SOC Metrics cron jobs found${NC}"
 fi
 
 # Check log files
 echo -e "${BLUE}Checking log files...${NC}"
 if [[ -f "$LOG_FILE" ]]; then
-    echo -e "${GREEN}✓ Log file exists: $LOG_FILE${NC}"
+    echo -e "${GREEN} Log file exists: $LOG_FILE${NC}"
     echo -e "${BLUE}Last 10 log entries:${NC}"
     tail -10 "$LOG_FILE" 2>/dev/null || echo "No log entries found"
 else
-    echo -e "${YELLOW}⚠ Log file not found: $LOG_FILE${NC}"
+    echo -e "${YELLOW} Log file not found: $LOG_FILE${NC}"
 fi
 
 # Check recent reports
@@ -286,32 +286,32 @@ echo -e "${BLUE}Checking recent reports...${NC}"
 REPORTS_DIR="$PROJECT_DIR/results/reports"
 if [[ -d "$REPORTS_DIR" ]]; then
     RECENT_REPORTS=$(find "$REPORTS_DIR" -name "*.xlsx" -mtime -7 2>/dev/null | wc -l)
-    echo -e "${GREEN}✓ Reports directory exists${NC}"
+    echo -e "${GREEN} Reports directory exists${NC}"
     echo -e "${BLUE}Reports generated in last 7 days: $RECENT_REPORTS${NC}"
 else
-    echo -e "${YELLOW}⚠ Reports directory not found: $REPORTS_DIR${NC}"
+    echo -e "${YELLOW} Reports directory not found: $REPORTS_DIR${NC}"
 fi
 
 # Check Python environment
 echo -e "${BLUE}Checking Python environment...${NC}"
 if command -v python3 &> /dev/null; then
-    echo -e "${GREEN}✓ Python3 is available: $(which python3)${NC}"
+    echo -e "${GREEN} Python3 is available: $(which python3)${NC}"
     python3 --version
 else
-    echo -e "${RED}✗ Python3 is not available${NC}"
+    echo -e "${RED} Python3 is not available${NC}"
 fi
 
 # Check .env file
 echo -e "${BLUE}Checking configuration...${NC}"
 if [[ -f "$PROJECT_DIR/.env" ]]; then
-    echo -e "${GREEN}✓ .env file exists${NC}"
+    echo -e "${GREEN} .env file exists${NC}"
 else
-    echo -e "${RED}✗ .env file not found${NC}"
+    echo -e "${RED} .env file not found${NC}"
 fi
 EOF
 
 chmod +x "$SCRIPT_DIR/check_cron_status.sh"
-echo -e "${GREEN}✓ Status check script created: $SCRIPT_DIR/check_cron_status.sh${NC}"
+echo -e "${GREEN} Status check script created: $SCRIPT_DIR/check_cron_status.sh${NC}"
 
 echo -e "${BLUE}========================================${NC}"
 echo -e "${GREEN}Setup completed successfully!${NC}"

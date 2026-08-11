@@ -512,9 +512,9 @@ class ExcelReportGenerator:
             is_good = value <= target
         
         if is_good:
-            return "🟢 Good"
+            return " Good"
         else:
-            return "🔴 Needs Improvement"
+            return " Needs Improvement"
     
     def _calculate_performance_score(self, value: float, thresholds: Dict[str, float]) -> float:
         """Calculate performance score (0-100)"""
